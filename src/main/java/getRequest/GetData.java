@@ -16,7 +16,7 @@ public class GetData extends Constants {
         Response response = get(APILink);
         int code          = response.getStatusCode();
         System.out.println("status code is  " + code);
-        Assert.assertEquals(code, 400);
+        Assert.assertEquals(code, 200);
     }
     @Test(priority = 4)
     public void testBody() {
@@ -25,7 +25,7 @@ public class GetData extends Constants {
         String json       = response.asString();
         JsonPath jp       = new JsonPath(json);
         System.out.println(data);
-        System.out.println(jp.get("name"));
+        System.out.println((String) jp.get("name"));
     }
     @Test(priority = 3)
     public void readArrayContents(){
@@ -35,18 +35,19 @@ public class GetData extends Constants {
         JSONObject data     = root.getJSONObject("data");
         System.out.println(root);
         System.out.println(data);
-        JSONArray featureArray   = data.getJSONArray("feature");
+      //  JSONArray featureArray   = data.getJSONArray("feature");
+        JSONArray featureArray   = data.getJSONArray("rooms");
         for (int i=0; i < featureArray.length(); i++) {
             System.out.println(featureArray.getJSONObject(i));
             JSONObject firstfeature   = featureArray.getJSONObject(i);
             String     name           = firstfeature.getString("name");
-            String       id           = firstfeature.getString("id");
+            int id                    = firstfeature.getInt("seatingCapacity");
             checkData(name,id);
             System.out.println("name =  "+ name);
             System.out.println("id = "+ id);
         }
         }
-        public void checkData(String name,String id){
+        public void checkData(String name,int id){
         Assert.assertNotEquals(name,"");
      }
 
@@ -55,7 +56,7 @@ public class GetData extends Constants {
         Response response   = get(APILink);
         System.out.println(response.getTime());
         int responsetime = (int) response.getTime();
-        Assert.assertSame(responsetime,170);
+        Assert.assertSame(responsetime,800);
 
      }
 }
